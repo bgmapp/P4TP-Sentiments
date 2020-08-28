@@ -182,6 +182,9 @@
 
     var svg = null;
     var waitingOnRefresh = false;
+
+    var originalSurveyLayerDefExpr = "1=1";
+    var originalStatesLayerDefExpr = "1=1";
     
     // Create a map from the referenced webmap item id
     let webmap = new WebMap({
@@ -203,6 +206,11 @@
     });
 
     view.when(() => {
+      const surveyLayer = getSurveyLayer()
+      const statesLayer = getStatesLayer()
+      originalSurveyLayerDefExpr = surveyLayer.definitionExpression
+      originalStatesLayerDefExpr = statesLayer.definitionExpression
+
       let home = new Home({
         view: view
       })
@@ -302,7 +310,7 @@ function filterBadWords() {
     if (newQuestionAnswers) {
       if (badQuestions.length > 0) {
         waitingOnRefresh = true
-        surveyLayer.definitionExpression = surveyQuestionField + ' NOT IN (' + badQuestions.join(',') + ')'
+        surveyLayer.definitionExpression = '(' + originalSurveyLayerDefExpr + ') AND (' + surveyQuestionField + ' NOT IN (' + badQuestions.join(',') + '))'
       } else {
         setupWordCloud()
       }
@@ -460,7 +468,8 @@ function clickedWord(evt) {
   
   const surveyLayer = getSurveyLayer()
   const statesLayer = getStatesLayer()
-  statesLayer.definitionExpression = '1=1'
+
+  statesLayer.definitionExpression = originalStatesLayerDefExpr
 
   if (currentAnswer) {
     const surveyQuery = surveyLayer.createQuery();
@@ -491,7 +500,7 @@ function filterStates() {
     else defExpr += ' OR '
     defExpr += (stateNameField + ' = \'' + feature.attributes[stateNameField] + '\'')
   })
-  statesLayer.definitionExpression = defExpr
+  statesLayer.definitionExpression = '(' + originalStatesLayerDefExpr + ') AND (' + defExpr + ')'
 }
 
 function closePopup() {
