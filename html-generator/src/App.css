@@ -1,0 +1,28 @@
+#extraBoundaryPopupContent {
+  height: 200px;
+}
+
+#copyableHtmlConfigDiv{
+  height: 95vh;
+}
+
+#copyableHtmlConfigDiv form{
+  height: 95vh;
+  overflow: auto;
+}
+
+#copyableHtmlConfigDiv form .list-group{
+  height: 100%;
+}
+
+#copyableHtmlDiv .form-group {
+  height: 95vh;
+}
+
+#copyableHtmlDiv .form-group div{
+  height: 95%;
+}
+
+#copyableHtmlDiv .form-group div textarea{
+  height: 100%;
+}
